@@ -108,26 +108,17 @@ reg [25:0] counter;
 reg  led_level;
 always @(posedge fpga_clk_50)
 begin
-
-if(counter==24999999)
-        begin
-                counter<=0;
-                led_level<=~led_level;
-        end
-else
-                counter<=counter+1'b1;
+if(counter==24999999) begin
+   counter<=0;
+   led_level<=~led_level;
+    end
+else begin
+   counter<=counter+1'b1;
 end
-
+end
 assign LEDR[0]=led_level;
-endmodule
-  
-  
-  
 
 
-//=======================================================
-//  Structural coding
-//=======================================================
 soc_system u0 (      
 		  .clk_clk                               (CLOCK_50),                             //                clk.clk                               //                reset.reset_n
 		  //HPS ddr3
@@ -229,6 +220,6 @@ soc_system u0 (
     );
 
 
-
+endmodule
 
   
