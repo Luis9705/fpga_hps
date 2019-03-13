@@ -83,6 +83,14 @@ void LCD_print_paragraph(int paragraph){
     DRAW_Refresh(&LcdCanvas);
 }
 
+void LCD_set_char(char word, int paragraph, int pos){
+    if ((paragraph < HEIGHT) && (paragraph >= 0)){
+        if ((pos < LENGHT ) && (paragraph >= 0)){
+            p[paragraph][pos] = word;
+        }
+    }      
+}
+
 void LCD_set_string(char* string, int paragraph, int pos){
     int nLen, i;
 
@@ -97,20 +105,8 @@ void LCD_set_string(char* string, int paragraph, int pos){
 
 }
 
-void LCD_set_char(char word, int paragraph, int pos){
-    if ((paragraph < HEIGHT) && (paragraph >= 0)){
-        if ((pos < LENGHT ) && (paragraph >= 0)){
-            p[paragraph][pos] = word;
-        }
-    }      
-}
-
-
 int main(void)
 {
-
-    LCD_clear_paragraphs();
-
 
     // Declare volatile pointers to I/O registers (volatile     
     // means that IO load and store instructions will be used   
@@ -158,8 +154,9 @@ int main(void)
         LCDHW_BackLight(true); // turn on LCD backlight
         
         LCD_Init();
+        
         DRAW_Clear(&LcdCanvas, LCD_WHITE);
-
+        LCD_clear_paragraphs();
         LCD_set_string("1234567890123456", 0,0);
         LCD_set_string("ABCDEFGHIJABCDEF", 1,0);
         LCD_set_string("abcdefghijabcdef", 2,0);
@@ -175,14 +172,14 @@ int main(void)
 
 
         int num, pio_read;
-        int junk; 
+        //int junk; 
         int prev = 0;
         while(1) 
         {
             // input a number
-            junk = scanf("%d", &num);
+            //junk = scanf("%d", &num);
             // send to PIOs
-            *(axi_pio_ptr) = num ; 
+            //*(axi_pio_ptr) = num ; 
             pio_read = *(axi_pio_read_ptr);
 
             if (prev != pio_read){
@@ -213,5 +210,4 @@ int main(void)
     return( 0 );
 } // end main
 
-/// /// ///////////////////////////////////// 
 /// end /////////////////////////////////////

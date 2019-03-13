@@ -100,7 +100,9 @@ wire [31:0] pp_in_axi;
 wire [31:0] pp_out_axi;
 
 
-assign pp_in_axi = pp_out_axi + 32'd1;
+//assign pp_in_axi = pp_out_axi + 32'd1;
+assign pp_in_axi[9:0] = SW;
+assign pp_in_axi[31:10] = 0;
 
  
   
