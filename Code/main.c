@@ -87,8 +87,8 @@ void LCD_set_string(char* string, int paragraph, int pos){
     int nLen, i;
 
     nLen = strlen(string);
-    if(pos + nLen >= LENGHT){
-        nLen = HEIGHT-pos;
+    if(pos + nLen > LENGHT){
+        nLen = LENGHT-pos;
     }
 
     for(i=0;i<nLen;i++){
@@ -106,8 +106,6 @@ void LCD_set_char(char word, int paragraph, int pos){
 }
 
 
-
-
 int main(void)
 {
 
@@ -117,7 +115,6 @@ int main(void)
     // Declare volatile pointers to I/O registers (volatile     
     // means that IO load and store instructions will be used   
     // to access these pointer locations,  
-  
     // === get FPGA addresses ==================
     // Open /dev/mem
     if( ( fd = open( "/dev/mem", ( O_RDWR | O_SYNC ) ) ) == -1 )    {
@@ -131,8 +128,6 @@ int main(void)
         close( fd );
         return( 1 );
     }
-    
-    
     // ===========================================
     // get virtual address for
     // AXI bus addr 
@@ -163,40 +158,21 @@ int main(void)
         LCDHW_BackLight(true); // turn on LCD backlight
         
         LCD_Init();
-       
         DRAW_Clear(&LcdCanvas, LCD_WHITE);
-  
-        //DRAW_Rect(&LcdCanvas, 0,0, LcdCanvas.Width-1, LcdCanvas.Height-1, LCD_BLACK); // retangle
-        //DRAW_Circle(&LcdCanvas, 10, 10, 6, LCD_BLACK);
 
-        DRAW_PrintString(&LcdCanvas, 0, 0, "1234567890123456", LCD_BLACK, &font_16x16);
-        DRAW_PrintString(&LcdCanvas, 0, 16, "ABCDEFGHIJABCDEF", LCD_BLACK, &font_16x16);
-        DRAW_PrintString(&LcdCanvas, 0, 32, "abcdefghijabcdef", LCD_BLACK, &font_16x16);
-        DRAW_PrintString(&LcdCanvas, 0, 48, "+-/*@#$%^&*()!,.", LCD_BLACK, &font_16x16);
-        //DRAW_PrintString(&LcdCanvas, 40, 0, "Hello", LCD_BLACK, &font_16x16);
-        //DRAW_PrintString(&LcdCanvas, 40, 5+16, "SoCFPGA", LCD_BLACK, &font_16x16);
-         //DRAW_PrintString(&LcdCanvas, 40, 5+32, "Terasic ", LCD_BLACK, &font_16x16);
-        DRAW_Refresh(&LcdCanvas);
+        LCD_set_string("1234567890123456", 0,0);
+        LCD_set_string("ABCDEFGHIJABCDEF", 1,0);
+        LCD_set_string("abcdefghijabcdef", 2,0);
+        LCD_set_string("+-/*@#$%^&*()!,.", 3,0);
+        LCD_print_paragraphs();
 
         usleep( 5000*1000 ); //sleep 2 seconds
 
-        DRAW_Clear(&LcdCanvas, LCD_WHITE);
-        DRAW_PrintString(&LcdCanvas, 16, 5+16, "Write Ready", LCD_BLACK, &font_16x16);
-        DRAW_Refresh(&LcdCanvas);
+        LCD_clear_paragraphs();
+        LCD_set_string("Write ready", 1,2);
+        LCD_print_paragraphs();
         printf("Write ready\n\r") ;
 
-        usleep( 1000*1000 ); //sleep 2 seconds
-
-        LCD_print_paragraphs();
-        printf("Paragraphs printed\n\r") ;
-
-        usleep( 1000*1000 ); //sleep 2 seconds
-
-        LCD_clear_paragraph(1);
-        LCD_set_string("Hola", 1,0);
-
-        LCD_print_paragraphs();
-        printf("Paragraphs printed\n\r") ;
 
         int num, pio_read;
         int junk; 
@@ -211,16 +187,13 @@ int main(void)
 
             if (prev != pio_read){
 
-                char arr[2];
-                arr[1]='\0';
-                arr[0] = pio_read +'0';
-                DRAW_Clear(&LcdCanvas, LCD_WHITE);
-                DRAW_PrintString(&LcdCanvas, 40, 5+32, arr, LCD_BLACK, &font_16x16);
-                DRAW_Refresh(&LcdCanvas); 
+                char arr = pio_read +'0';
+                LCD_set_char(arr, 2,7);
+                LCD_print_paragraphs();
                 printf("LCD Modificado\n\r") ;
             }
             // receive back and print
-            printf("pio in=%d\n\r", pio_read) ;
+            //printf("pio in=%d\n\r", pio_read) ;
 
             prev = pio_read;
 
@@ -230,17 +203,13 @@ int main(void)
 
     free(LcdCanvas.pFrame);
     }    
-  
     // clean up our memory mapping and exit
-    
     if( munmap( virtual_base, HW_REGS_SPAN ) != 0 ) {
         printf( "ERROR: munmap() failed...\n" );
         close( fd );
         return( 1 );
     }
-
     close( fd );
-
     return( 0 );
 } // end main
 
