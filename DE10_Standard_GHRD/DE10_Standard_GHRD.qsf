@@ -5,7 +5,7 @@
 
 set_global_assignment -name FAMILY "Cyclone V"
 set_global_assignment -name DEVICE 5CSXFC6D6F31C6
-set_global_assignment -name TOP_LEVEL_ENTITY "DE10_Standard_GHRD"
+set_global_assignment -name TOP_LEVEL_ENTITY DE10_Standard_GHRD
 set_global_assignment -name LAST_QUARTUS_VERSION "18.1.0 Lite Edition"
 set_global_assignment -name PROJECT_CREATION_TIME_DATE "FRI APR 18 11:09:14 2014"
 set_global_assignment -name DEVICE_FILTER_PACKAGE FBGA
@@ -797,9 +797,6 @@ set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to HPS_USB_STP
 
 #============================================================
 set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
-set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
-set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
-set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
 set_global_assignment -name STRATIX_DEVICE_IO_STANDARD "2.5 V"
 set_instance_assignment -name INPUT_TERMINATION "PARALLEL 50 OHM WITH CALIBRATION" -to HPS_DDR3_DQ[0] -tag __hps_sdram_p0
 set_instance_assignment -name OUTPUT_TERMINATION "SERIES 50 OHM WITH CALIBRATION" -to HPS_DDR3_DQ[0] -tag __hps_sdram_p0
@@ -1012,4 +1009,8 @@ set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
 set_global_assignment -name QIP_FILE soc_system/synthesis/soc_system.qip
 set_global_assignment -name VERILOG_FILE DE10_Standard_GHRD.v
 set_global_assignment -name SDC_FILE DE10_Standard_GHRD.sdc
+set_global_assignment -name SYSTEMVERILOG_FILE LCD_control.sv
+set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
+set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
+set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

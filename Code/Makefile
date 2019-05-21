@@ -1,5 +1,5 @@
 #
-TARGET = hps_fpga_example
+TARGET = hps_fpga
 
 #
 ALT_DEVICE_FAMILY ?= soc_cv_av

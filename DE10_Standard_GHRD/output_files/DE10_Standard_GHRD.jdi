@@ -1,6 +1,6 @@
 <sld_project_info>
   <project>
-    <hash md5_digest_80b="0eeecc167cc9a497f98f"/>
+    <hash md5_digest_80b="6f482142b60732690b57"/>
   </project>
   <file_info>
     <file device="5CSXFC6D6F31C6" path="DE10_Standard_GHRD.sof" usercode="0xFFFFFFFF"/>
@@ -8,7 +8,7 @@
   <sld_infos>
     <sld_info hpath="soc_system:u0" name="u0">
       <assignment_values>
-        <assignment_value text="QSYS_NAME soc_system HAS_SOPCINFO 1 GENERATION_ID 1552429170"/>
+        <assignment_value text="QSYS_NAME soc_system HAS_SOPCINFO 1 GENERATION_ID 1558024750"/>
       </assignment_values>
       <parameters/>
     </sld_info>

@@ -100,14 +100,45 @@ wire [31:0] pp_in_axi;
 wire [31:0] pp_out_axi;
 
 
+
+
+wire rst;
+wire rst_btn;
+wire [7:0]data;
+wire rs;
+wire rw;
+wire en;
+wire start;
+
+assign rst_btn = ~KEY[0];
+assign start = pp_out_axi[0];
+assign rst = pp_out_axi[1];
+
 //assign pp_in_axi = pp_out_axi + 32'd1;
-assign pp_in_axi[9:0] = SW;
-assign pp_in_axi[31:10] = 0;
+assign pp_in_axi[7:0] = data;
+assign pp_in_axi[8] = rw;
+assign pp_in_axi[9] = rs;
+assign pp_in_axi[10] = en;
+assign pp_in_axi[11] = rst_btn;
+assign pp_in_axi[21:12] = SW;
+assign pp_in_axi[31:22] = 0;
+
+
+LCD_control (
+	.clk(CLOCK_50),
+	.rst(rst),
+	.start(start),
+	.data(data),
+	.rw(rw),
+	.rs(rs),
+	.en(en)
+	);
 
  
   
 reg [25:0] counter; 
 reg  led_level;
+
 always @(posedge fpga_clk_50)
 begin
 if(counter==24999999) begin
@@ -119,6 +150,9 @@ else begin
 end
 end
 assign LEDR[0]=led_level;
+assign LEDR[1]=rst_btn;
+assign LEDR[2]=start;
+assign LEDR[3]=rst;
 
 
 soc_system u0 (      

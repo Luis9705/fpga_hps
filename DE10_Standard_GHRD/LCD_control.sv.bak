@@ -1,0 +1,11 @@
+module LCD_control (
+	input 		clk,
+	input			rst,
+	input			start,
+	output[7:0] data,
+	output		rs,
+	output		en
+	);
+	
+	
+endmodule

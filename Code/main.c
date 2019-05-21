@@ -171,21 +171,30 @@ int main(void)
         printf("Write ready\n\r") ;
 
 
-        int num, pio_read;
-        //int junk; 
+        unsigned int pio_read;
+        unsigned char data, num, rs, en, rw, rst, arr1, arr2;
         int prev = 0;
         while(1) 
         {
             // input a number
             //junk = scanf("%d", &num);
             // send to PIOs
-            //*(axi_pio_ptr) = num ; 
+            *(axi_pio_ptr) = 0 ; 
+
             pio_read = *(axi_pio_read_ptr);
 
             if (prev != pio_read){
 
-                char arr = pio_read +'0';
-                LCD_set_char(arr, 2,7);
+                num = (pio_read&0x3FF000)>>12;
+                data = pio_read&0xFF;
+                rw = pio_read&0x100;
+                rs = pio_read&0x200;
+                en = pio_read&0x400;
+                rst = pio_read&0x800;
+                arr1 =  num +'0';
+                arr2 = data + '0';
+                LCD_set_char(arr1, 2,7);
+                LCD_set_char(arr2, 3,7);
                 LCD_print_paragraphs();
                 printf("LCD Modificado\n\r") ;
             }
